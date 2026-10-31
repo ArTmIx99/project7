@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Створити бронювання</title>
+</head>
+<body>
+    <h2>Забронювати кімнату або місце</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Підтвердити бронювання</button>
+    </form>
+    
+    <br>
+    <a href="{% url 'home' %}">Повернутися до списку кімнат</a>
+</body>
+</html>
