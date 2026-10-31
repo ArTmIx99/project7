@@ -20,5 +20,5 @@ from project7 import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.RoomListView.as_view(), name="home"),
-    path('book/', views.BookingCreateView.as_view(), name='book_room')
+    path('book/<int:room_id>/', views.BookingCreateView.as_view(), name='book_room')
 ]
