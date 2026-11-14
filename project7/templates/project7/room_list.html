@@ -14,7 +14,7 @@
     <!-- Шапка (Navbar) -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'home' %}">
                 <i class="fa-solid fa-hotel text-warning fs-4"></i>
                 <span class="fw-bold">Сервер Бронювання</span>
             </a>
@@ -22,14 +22,15 @@
             <!-- Блок керування акаунтом у шапці -->
             <div class="d-flex align-items-center gap-3">
                 {% if user.is_authenticated %}
-                    <!-- Якщо користувач увійшов -->
-                    <span class="text-light d-flex align-items-center gap-2">
+                    <!-- Клікабельний нікнейм, що веде на сторінку профілю -->
+                    <a href="{% url 'profile' %}" class="text-light text-decoration-none d-flex align-items-center gap-2 px-2 py-1 rounded bg-secondary bg-opacity-25 transition-all">
                         <i class="fa-solid fa-user-circle text-warning fs-5"></i>
-                        <span>Вітаємо, <strong>{{ user.username }}</strong>!</span>
-                    </span>
+                        <span>Вітаємо, <strong class="text-warning">{{ user.username }}</strong>!</span>
+                    </a>
+                    
                     <form action="{% url 'logout' %}" method="post" class="d-inline m-0">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-light btn-sm">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
                             <i class="fa-solid fa-right-from-bracket me-1"></i> Вийти
                         </button>
                     </form>
