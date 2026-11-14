@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content5="width=device-width, initial-scale=1.0">
+    <title>{{ room.name }} - Деталі кімнати</title>
+    <!-- Підключаємо Bootstrap для швидкого та охайного стилю -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container my-5">
+        <!-- Навігація назад -->
+        <div class="mb-4">
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">&larr; Назад до списку кімнат</a>
+        </div>
+
+        <div class="row">
+            <!-- Основна інформація про кімнату -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h1 class="card-title mb-3">{{ room.name }}</h1>
+                        
+                        {% if room.room_type %}
+                            <h6 class="text-muted mb-3">Тип кімнати: <span class="badge bg-info text-dark">{{ room.room_type.name }}</span></h6>
+                        {% endif %}
+
+                        <h4 class="text-success mb-4">{{ room.price }} грн / ніч</h4>
+
+                        <hr>
+
+                        <h5 class="mb-3">Опис</h5>
+                        <p class="card-text text-muted">
+                            {{ room.description|default:"Опис для цієї кімнати відсутній." }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Бокова панель з діями та доступністю -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title mb-3">Бронювання</h4>
+                        <p class="text-muted">Бажаєте забронювати цю кімнату?</p>
+
+                        <a href="{% url 'book_room' room.id %}" class="btn btn-primary w-100 mb-3">Забронювати зараз</a>
+                        
+                        <hr>
+
+                        <h5 class="mb-3">Графік зайнятості</h5>
+                        <div id="availability-status" class="small text-muted">
+                            Завантаження графіку зайнятості...
+                        </div>
+                        <!-- Список зайнятих дат (можна розширити або підключити FullCalendar за потреби) -->
+                        <ul id="busy-dates-list" class="list-group list-group-flush mt-2">
+                            <!-- Динамічно заповнюється скриптом нижче -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript для завантаження даних з твого room_availability API -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const roomId = "{{ room.id }}";
+            const url = `/rooms/${roomId}/availability/`;
+            const statusContainer = document.getElementById("availability-status");
+            const listContainer = document.getElementById("busy-dates-list");
+
+            fetch(url)
+                .then(response => response.json())
+                .then(events => {
+                    if (events.length === 0) {
+                        statusContainer.innerHTML = "<span class='text-success'>Кімната повністю вільна на найближчий час!</span>";
+                        return;
+                    }
+
+                    statusContainer.innerHTML = "Зайняті періоди:";
+                    listContainer.innerHTML = "";
+
+                    events.forEach(event => {
+                        const startDate = new Date(event.start).toLocaleDateString();
+                        const endDate = new Date(event.end).toLocaleDateString();
+                        
+                        const li = document.createElement("li");
+                        li.className = "list-group-item d-flex justify-content-between align-items-center px-0";
+                        li.innerHTML = `
+                            <span>${startDate} — ${endDate}</span>
+                            <span class="badge" style="background-color: ${event.color};">${event.title}</span>
+                        `;
+                        listContainer.appendChild(li);
+                    });
+                })
+                .catch(error => {
+                    console.error("Помилка завантаження зайнятості:", error);
+                    statusContainer.innerHTML = "<span class='text-danger'>Не вдалося завантажити дані про зайнятість.</span>";
+                });
+        });
+    </script>
+</body>
+</html>

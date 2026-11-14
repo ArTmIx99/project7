@@ -69,8 +69,11 @@
                                                 {{ room.room_type.name }}
                                             </span>
                                         {% endif %}
-                                        <h5 class="card-title fw-bold text-primary mb-0">
-                                            <i class="fa-solid fa-bed me-2"></i>{{ room.title }}
+                                        <!-- Назва кімнати як посилання на деталі -->
+                                        <h5 class="card-title fw-bold mb-0">
+                                            <a href="{% url 'room_detail' room.id %}" class="text-primary text-decoration-none">
+                                                <i class="fa-solid fa-bed me-2"></i>{{ room.title }}
+                                            </a>
                                         </h5>
                                     </div>
                                     <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
@@ -90,7 +93,11 @@
 
                                 <hr class="my-3 text-muted">
 
+                                <!-- Кнопки дій: Детальніше + Забронювати -->
                                 <div class="d-grid gap-2">
+                                    <a href="{% url 'room_detail' room.id %}" class="btn btn-outline-primary fw-semibold rounded-2 text-decoration-none">
+                                        <i class="fa-solid fa-circle-info me-2"></i>Детальніше
+                                    </a>
                                     <a href="{% url 'book_room' room.id %}" class="btn btn-primary fw-semibold rounded-2 text-decoration-none">
                                         <i class="fa-regular fa-calendar-check me-2"></i>Забронювати
                                     </a>
