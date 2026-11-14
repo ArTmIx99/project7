@@ -18,9 +18,31 @@
                 <i class="fa-solid fa-hotel text-warning fs-4"></i>
                 <span class="fw-bold">Сервер Бронювання</span>
             </a>
-            <span class="navbar-text text-light small">
-                <i class="fa-solid fa-circle text-success me-1"></i> Система працює
-            </span>
+
+            <!-- Блок керування акаунтом у шапці -->
+            <div class="d-flex align-items-center gap-3">
+                {% if user.is_authenticated %}
+                    <!-- Якщо користувач увійшов -->
+                    <span class="text-light d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-user-circle text-warning fs-5"></i>
+                        <span>Вітаємо, <strong>{{ user.username }}</strong>!</span>
+                    </span>
+                    <form action="{% url 'logout' %}" method="post" class="d-inline m-0">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-light btn-sm">
+                            <i class="fa-solid fa-right-from-bracket me-1"></i> Вийти
+                        </button>
+                    </form>
+                {% else %}
+                    <!-- Якщо користувач НЕ увійшов -->
+                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">
+                        <i class="fa-solid fa-right-to-bracket me-1"></i> Увійти
+                    </a>
+                    <a href="{% url 'register' %}" class="btn btn-warning btn-sm fw-semibold">
+                        <i class="fa-solid fa-user-plus me-1"></i> Реєстрація
+                    </a>
+                {% endif %}
+            </div>
         </div>
     </nav>
 
@@ -68,7 +90,6 @@
                                 <hr class="my-3 text-muted">
 
                                 <div class="d-grid gap-2">
-                                    <!-- Посилання замість кнопки виклику модального вікна -->
                                     <a href="{% url 'book_room' room.id %}" class="btn btn-primary fw-semibold rounded-2 text-decoration-none">
                                         <i class="fa-regular fa-calendar-check me-2"></i>Забронювати
                                     </a>

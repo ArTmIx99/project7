@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Реєстрація</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .register-container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 440px;
+        }
+
+        h2 {
+            margin-bottom: 24px;
+            color: #333333;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        /* Стилізація полів форми Django (form.as_p) */
+        form p {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            margin-bottom: 6px;
+            color: #555555;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        form input[type="text"],
+        form input[type="password"],
+        form input[type="email"] {
+            padding: 12px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        form input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+            outline: none;
+        }
+
+        /* Допоміжний текст Django (наприклад, вимоги до пароля) */
+        .helptext {
+            font-size: 12px;
+            color: #777777;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        /* Повідомлення про помилки Django */
+        .errorlist {
+            color: #e74c3c;
+            font-size: 12px;
+            list-style: none;
+            margin-top: 4px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background: #5a6fd6;
+        }
+
+        .login-link {
+            margin-top: 20px;
+            text-align: center;
+            color: #666666;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="register-container">
+        <h2>Реєстрація</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Зареєструватися</button>
+        </form>
+        <p class="login-link">Вже є акаунт? 
+            <a href="{% url 'login' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}">Увійти</a>
+        </p>
+    </div>
+
+</body>
+</html>
